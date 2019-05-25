@@ -1,4 +1,4 @@
-# flamingo-product-rating
+# flamingo-product-rating [![Build Status](https://travis-ci.org/tessig/flamingo-product-rating.svg?branch=master)](https://travis-ci.org/tessig/flamingo-product-rating)
 A simple [Flamingo](https://www.flamingo.me/) application as showcase for a DevOps approach.
 
 ## Building the app
