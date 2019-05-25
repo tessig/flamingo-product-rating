@@ -1,0 +1,17 @@
+{{template "pages/site.html" .}}
+
+{{define "title"}}Product List{{end}}
+
+{{define "content"}}
+	<h1>Available product ratings</h1>
+	<div class="row">
+		<div class="list-group">
+			{{range .Products}}
+				<a class="list-group-item" href="{{map "pid" .ID | url "rating"}}">
+					<span class="badge">{{index $.Amounts .ID}}</span>
+					{{.Name}}
+				</a>
+			{{end}}
+		</div>
+	</div>
+{{end}}

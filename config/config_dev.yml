@@ -1,0 +1,19 @@
+zap:
+  json: false
+  loglevel: Debug
+  colored: true
+
+debug:
+  mode: true
+
+db:
+  host: ""
+  port: "33306"
+  databaseName: ratings
+  user: ratings
+  password: ratings
+
+productservice:
+  baseurl: "http://localhost:8080/"
+  endpoints.list: "products"
+  endpoints.detail: "products/id/:pid"

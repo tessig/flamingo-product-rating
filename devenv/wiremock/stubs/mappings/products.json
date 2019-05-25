@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/products/id/([0-9]+)"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName" : "product_{{request.requestLine.pathSegments.[2]}}.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

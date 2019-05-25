@@ -1,0 +1,41 @@
+{{template "pages/site.html" .}}
+
+{{define "title"}}DevOps Demo Product Rating App{{end}}
+
+{{define "content"}}
+	<h1>Product Ratings</h1>
+	<div class="row">
+		<div class="col-sm-3">
+			{{template "blocks/overview.html" .Average}}
+		</div>
+		<div class="col-sm-3">
+			{{template "blocks/breakdown.html" .Breakdown}}
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-3 pull-left">
+			<a href="{{url "products"}}">Show specific product ratings</a>
+		</div>
+		<div class="col-sm-7 pull-right">
+			<a type="button" href="{{url "rating.product.form"}}" class="btn btn-warning btn-lg">
+				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a review
+			</a>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-7">
+			<hr/>
+			<h2>Latest reviews</h2>
+			<div class="review-block">
+				{{range $i, $r := .Reviews}}
+					{{if gt $i 0}}
+						<hr/>
+					{{end}}
+					<div class="row">
+						{{template "blocks/detail.html" $r}}
+					</div>
+				{{end}}
+			</div>
+		</div>
+	</div>
+{{end}}

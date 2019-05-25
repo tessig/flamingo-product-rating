@@ -1,0 +1,23 @@
+{{template "pages/site.html" .}}
+
+{{define "title"}}New Product Rating for {{printf "%q" .Product.Name}}{{end}}
+
+{{define "content"}}
+	<h1>New Product Rating <small> for {{printf "%q" .Product.Name}}</small></h1>
+	<div class="row">
+		<form class="form-horizontal" method="post" action="{{url "rating.post"}}">
+			<input type="hidden" name="product_id" id="product_id" value="{{.Product.ID}}">
+			{{range .Structure}}
+				{{template "blocks/forms/element.html" .}}
+			{{end}}
+			<div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+					<button type="submit" class="btn btn-primary btn-large btn-block">
+						<span class="glyphicon glyphicon-ok" aria-hidden="true"></span> Save
+					</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+{{end}}

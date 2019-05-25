@@ -1,0 +1,17 @@
+<div class="col-sm-3">
+    <img src="https://randomuser.me/api/portraits/{{with $g:=map 0 "men" 1 "women"}}{{random 0 2 | print | index $g}}{{end}}/{{random 0 99}}.jpg" width="60" class="img-rounded" alt="{{.UserName}}">
+    <div class="review-block-name"><a href="#">{{.UserName}}</a></div>
+    <div class="review-block-date">{{with $x := dateTimeFormat .CreatedAt}}{{$x.FormatToLocalDateTime}}{{end}}</div>
+</div>
+<div class="col-sm-9">
+    <div class="review-block-rate">
+        {{range for 1 .Stars}}
+            <span class="label label-warning" aria-label="Left Align"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></span>
+        {{end}}
+        {{range for .Stars 4}}
+            <span class="label label-warning rating-deactivated" aria-label="Left Align"><span class="glyphicon glyphicon-star" aria-hidden="true"></span></span>
+        {{end}}
+    </div>
+    <div class="review-block-title">{{.Title}}</div>
+    <div class="review-block-description">{{.Text}}</div>
+</div>

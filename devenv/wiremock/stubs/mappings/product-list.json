@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "urlPattern": "/products"
+  },
+  "response": {
+    "status": 200,
+    "bodyFileName" : "product-list.json",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

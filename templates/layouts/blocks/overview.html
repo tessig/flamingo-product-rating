@@ -1,0 +1,15 @@
+<div class="rating-block">
+    <h4>Average rating</h4>
+    <h2 class="bold">{{numberFormat .Value}} <small>/ {{.Max}}</small></h2>
+    {{range for 1 .Stars}}
+        <span  class="btn btn-warning btn-sm" aria-label="Left Align">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </span>
+    {{end}}
+    {{range for .Stars 4}}
+        <span class="btn btn-warning btn-sm rating-deactivated" aria-label="Left Align">
+            <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+        </span>
+    {{end}}
+    <span>({{.Amount}})</span>
+</div>

@@ -1,0 +1,13 @@
+{{template "pages/site.html" .}}
+
+{{define "title"}}New Product Rating saved{{end}}
+
+{{define "content"}}
+	<h1>Your new product rating has been saved</h1>
+	<p>
+		<a class="btn btn-info btn-large" href="{{url "home"}}">
+			<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+			Back to Overview
+		</a>
+	</p>
+{{end}}

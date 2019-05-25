@@ -1,0 +1,17 @@
+<h4>Rating breakdown</h4>
+
+{{range .}}
+    <div class="pull-left">
+        <div class="pull-left" style="width:35px; line-height:1;">
+            <div style="height:9px; margin:5px 0;">{{.Stars}} <span class="glyphicon glyphicon-star"></span></div>
+        </div>
+        <div class="pull-left" style="width:180px;">
+            <div class="progress" style="height:9px; margin:8px 0;">
+                <div class="progress-bar progress-bar-{{barType .Stars}}" role="progressbar" aria-valuenow="{{.Amount}}" aria-valuemin="0" aria-valuemax="{{.Total}}" style="width: {{.Percentage}}%">
+                    <span class="sr-only">{{.Percentage}}%</span>
+                </div>
+            </div>
+        </div>
+        <div class="pull-right" style="margin-left:10px;">{{.Amount}}</div>
+    </div>
+{{end}}

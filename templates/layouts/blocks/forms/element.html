@@ -1,0 +1,23 @@
+<div class="form-group {{if .HasError}}has-error{{else if .HasFeedback}}has-success{{end}} {{if .HasFeedback}}has-feedback{{end}}">
+	<label for="{{.ID}}" class="col-sm-2 control-label">{{.Label}}</label>
+	<div class="col-sm-10">
+		<div class="input-group">
+			{{if eq .Type "stars"}}
+				{{range for 1 5}}
+					<label class="radio-inline">
+						<input type="radio" name="{{$.Name}}" id="{{$.ID}}{{.}}" value="{{.}}" {{if eq $.Value .}}checked{{end}}> {{.}} <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+					</label>
+				{{end}}
+			{{else}}
+				<span class="input-group-addon"><span class="glyphicon glyphicon-{{.Icon}}" aria-hidden="true"></span></span>
+				{{if eq .Type "input"}}
+					<input type="text" class="form-control" id="{{.ID}}" name="{{.Name}}" aria-describedby="helpBlock{{.ID}}" value="{{.Value}}">
+				{{else if eq .Type "textarea"}}
+					<textarea class="form-control" id="{{.ID}}" name="{{.Name}}" aria-describedby="helpBlock{{.ID}}" rows="10">{{.Value}}</textarea>
+				{{end}}
+				{{if .HasFeedback}}<span class="glyphicon glyphicon-{{if .HasError}}remove{{else}}ok{{end}} form-control-feedback" aria-hidden="true"></span>{{end}}
+			{{end}}
+		</div>
+		<span id="helpBlock{{.ID}}" class="help-block">{{if .HasError}}<ul>{{range .Errors}}<li>{{.}}</li>{{end}}</ul>{{end}}</span>
+	</div>
+</div>

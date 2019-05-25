@@ -1,0 +1,21 @@
+cmd.name: rating
+locale.date.location: "Europe/Berlin"
+gotemplates:
+  engine:
+    templates.basepath: templates
+    layout.dir: layouts
+
+systemendpoint.serviceAddr: ":13210"
+
+migrations:
+  automigrate: %%ENV:AUTOMIGRATE%%false%%
+
+db:
+  host: "%%ENV:DBHOST%%"
+  port: "%%ENV:DBPORT%%"
+  databaseName: "%%ENV:DBNAME%%"
+  user: "%%ENV:DBUSER%%"
+  password: "%%ENV:DBPASSWORD%%"
+
+productservice:
+  baseurl: "%%ENV:PRODUCTSERVICEURL%%"
