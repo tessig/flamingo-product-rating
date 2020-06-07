@@ -7,7 +7,7 @@
 	<div class="row">
 		<div class="list-group">
 			{{range .Products}}
-				<a class="list-group-item" href="{{map "pid" .ID | url "rating"}}">
+				<a class="list-group-item" href="{{print .ID | url "rating" "pid"}}">
 					<span class="badge">{{index $.Amounts .ID}}</span>
 					{{.Name}}
 				</a>

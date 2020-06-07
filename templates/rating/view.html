@@ -14,7 +14,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-7 pull-right">
-			<a type="button" href="{{map "pid" .Product.ID | url "rating.new"}}" class="btn btn-warning btn-lg">
+			<a type="button" href="{{print .Product.ID | url "rating.new" "pid"}}" class="btn btn-warning btn-lg">
 				<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Add a review
 			</a>
 		</div>

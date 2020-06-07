@@ -11,9 +11,9 @@ import (
 	"flamingo.me/flamingo/v3/framework/opencensus"
 	"flamingo.me/flamingo/v3/framework/web"
 	"flamingo.me/form"
-
 	"github.com/tessig/flamingo-mysql/db"
 	"github.com/tessig/flamingo-mysql/migration"
+
 	"github.com/tessig/flamingo-product-rating/src/app"
 	"github.com/tessig/flamingo-product-rating/src/metrics"
 	"github.com/tessig/flamingo-product-rating/src/products"
@@ -31,7 +31,7 @@ func (a *application) Configure(injector *dingo.Injector) {
 
 // Routes
 func (a *defaultRoutes) Routes(registry *web.RouterRegistry) {
-	registry.Route("/static/*n", "_static")
+	registry.MustRoute("/static/*n", "_static")
 	registry.HandleGet(
 		"_static",
 		web.WrapHTTPHandler(http.StripPrefix("/static/", http.FileServer(http.Dir("static")))),
