@@ -1,8 +1,6 @@
 package main
 
 import (
-	"net/http"
-
 	"flamingo.me/dingo"
 	"flamingo.me/flamingo/v3"
 	"flamingo.me/flamingo/v3/core/cache"
@@ -31,11 +29,7 @@ func (a *application) Configure(injector *dingo.Injector) {
 
 // Routes
 func (a *defaultRoutes) Routes(registry *web.RouterRegistry) {
-	registry.MustRoute("/static/*n", "_static")
-	registry.HandleGet(
-		"_static",
-		web.WrapHTTPHandler(http.StripPrefix("/static/", http.FileServer(http.Dir("static")))),
-	)
+	registry.MustRoute("/static/*name", `flamingo.static.file(name,dir?="static")`)
 }
 
 func main() {
