@@ -3,8 +3,14 @@ package infrastructure
 import (
 	"context"
 	"errors"
+	"fmt"
+	"strconv"
 
+	"flamingo.me/flamingo/v3/framework/opencensus"
 	"github.com/tessig/flamingo-mysql/db"
+	"go.opencensus.io/stats"
+	"go.opencensus.io/stats/view"
+	"go.opencensus.io/tag"
 	"go.opencensus.io/trace"
 
 	"github.com/tessig/flamingo-product-rating/src/app/domain"
@@ -17,7 +23,16 @@ type (
 	}
 )
 
-var _ domain.RatingRepository = new(RatingRepository)
+var (
+	_ domain.RatingRepository = new(RatingRepository)
+
+	stat            = stats.Int64("rating/metrics/amount", "Amount of ratings", stats.UnitDimensionless)
+	keyProductID, _ = tag.NewKey("productID")
+)
+
+func init() {
+	_ = opencensus.View("rating/metrics/amount", stat, view.Count(), keyProductID)
+}
 
 // Inject dependencies
 func (r *RatingRepository) Inject(db db.DB) {
@@ -117,6 +132,10 @@ func (r *RatingRepository) Save(ctx context.Context, rating *domain.Rating) erro
 		return errors.New("no entity has been deleted")
 	}
 
+	ctx, _ = tag.New(ctx, tag.Upsert(keyProductID, strconv.Itoa(rating.ProductID)), tag.Upsert(opencensus.KeyArea, "-"))
+	stats.Record(ctx, stat.M(1))
+	fmt.Println("RECORD: 1")
+
 	return nil
 }
 
@@ -132,6 +151,9 @@ func (r *RatingRepository) Delete(ctx context.Context, rating *domain.Rating) er
 	if affected, _ := result.RowsAffected(); affected == 0 {
 		return errors.New("no entity has been deleted")
 	}
+
+	ctx, _ = tag.New(ctx, tag.Upsert(keyProductID, strconv.Itoa(rating.ProductID)), tag.Upsert(opencensus.KeyArea, "-"))
+	stats.Record(ctx, stat.M(-1))
 
 	return nil
 }

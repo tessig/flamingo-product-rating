@@ -15,8 +15,16 @@ A docker-compose setup for development can be found in devenv directory.
 
 This contains:
   * Database on mysql://localhost:33306
-  * Productservice on http://localhost:8080/ 
+  * Productservice on http://localhost:8081/ 
   * Jaeger on http://localhost:16686/
+  * Prometheus on http://localhost:9090/
+  * Grafana on http://localhost:3000/ 
+  
+    user: admin, password: password
+  * Alert Manager on http://localhost:9093/
+  * Node Exporter on http://localhost:9100/
+  * cAdvisor on http://localhost:8080/
+ 
   
 Simply run `docker-compose up` from within devenv.
 

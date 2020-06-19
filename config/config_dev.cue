@@ -15,7 +15,7 @@ mysql: db: {
 }
 
 productservice: {
-	baseurl:            "http://localhost:8080/"
+	baseurl:            "http://localhost:8081/"
 	"endpoints.list":   "products"
 	"endpoints.detail": "products/id/:pid"
 }

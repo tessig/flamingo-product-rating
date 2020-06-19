@@ -16,7 +16,6 @@ import (
 
 	"github.com/tessig/flamingo-product-rating/src/app"
 	"github.com/tessig/flamingo-product-rating/src/healthcheck"
-	"github.com/tessig/flamingo-product-rating/src/metrics"
 	"github.com/tessig/flamingo-product-rating/src/products"
 )
 
@@ -48,7 +47,6 @@ func main() {
 			new(framework.SessionModule),
 			new(coreHealthcheck.Module),
 			new(healthcheck.Module),
-			new(metrics.Module),
 			new(app.Module),
 			new(application),
 		},

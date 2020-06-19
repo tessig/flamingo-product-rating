@@ -1,0 +1,14 @@
+groups:
+- name: flamingo
+  rules:
+
+  # Alert for too many flamingo errors
+  - alert: too_many_errors
+    expr: rate(flamingo_zap_logs{job="flamingo",level="Debug"}[5m]) > 10
+    for: 10s
+    labels:
+      severity: page
+    annotations:
+      summary: "Instance {{ $labels.instance }} has logged too many errors"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} logged too many errors."
+

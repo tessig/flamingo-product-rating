@@ -2,8 +2,8 @@ package products
 
 import (
 	"flamingo.me/dingo"
-	"flamingo.me/flamingo/v3/framework/config"
 
+	"github.com/tessig/flamingo-product-rating/src/app"
 	"github.com/tessig/flamingo-product-rating/src/app/infrastructure"
 	products "github.com/tessig/flamingo-product-rating/src/products/infrastructure"
 )
@@ -18,11 +18,22 @@ func (m *Module) Configure(injector *dingo.Injector) {
 	injector.Bind((*infrastructure.Source)(nil)).To(new(products.Client))
 }
 
-// DefaultConfig for product module
-func (m *Module) DefaultConfig() config.Map {
-	return config.Map{
-		"productservice.baseurl":          "http://localhost:8080/",
-		"productservice.endpoints.list":   "products",
-		"productservice.endpoints.detail": "products/id/:pid",
+// Depends on other modules
+func (m *Module) Depends() []dingo.Module {
+	return []dingo.Module{
+		new(app.Module),
 	}
+}
+
+// CueConfig for the module
+func (m *Module) CueConfig() string {
+	return `
+productservice: {
+	baseurl: string | *"http://localhost:8080/"
+	endpoints: {
+		list: string | *"products"
+		detail: string | *"products/id/:pid"
+	}
+}
+`
 }
