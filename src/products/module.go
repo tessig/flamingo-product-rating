@@ -4,7 +4,7 @@ import (
 	"flamingo.me/dingo"
 
 	"github.com/tessig/flamingo-product-rating/src/app"
-	"github.com/tessig/flamingo-product-rating/src/app/infrastructure"
+	"github.com/tessig/flamingo-product-rating/src/app/domain"
 	products "github.com/tessig/flamingo-product-rating/src/products/infrastructure"
 )
 
@@ -15,7 +15,7 @@ type (
 
 // Configure product module
 func (m *Module) Configure(injector *dingo.Injector) {
-	injector.Bind((*infrastructure.Source)(nil)).To(new(products.Client))
+	injector.Bind(new(domain.ProductRepository)).To(new(products.Client))
 }
 
 // Depends on other modules

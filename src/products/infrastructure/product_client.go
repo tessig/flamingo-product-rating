@@ -2,6 +2,7 @@ package infrastructure
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -13,7 +14,7 @@ import (
 	"github.com/pkg/errors"
 	"go.opencensus.io/trace"
 
-	"github.com/tessig/flamingo-product-rating/src/app/infrastructure"
+	"github.com/tessig/flamingo-product-rating/src/app/domain"
 )
 
 type (
@@ -26,7 +27,7 @@ type (
 	}
 )
 
-var _ infrastructure.Source = new(Client)
+var _ domain.ProductRepository = new(Client)
 
 // Inject dependencies
 func (c *Client) Inject(
@@ -43,24 +44,46 @@ func (c *Client) Inject(
 	c.detailEndpoint = conf.DetailEndpoint
 }
 
-// Detail returns the raw data for a given  product ID
-func (c *Client) Detail(ctx context.Context, pid int) ([]byte, error) {
-	ctx, span := trace.StartSpan(ctx, "products/client/Detail")
-	defer span.End()
-
-	return c.Get(ctx, c.baseURL+c.detailEndpoint, nil, []string{":pid", strconv.Itoa(pid)})
-}
-
-// All returns the raw data for all products
-func (c *Client) All(ctx context.Context) ([]byte, error) {
+// List returns all products
+func (c *Client) List(ctx context.Context) ([]*domain.Product, error) {
 	ctx, span := trace.StartSpan(ctx, "products/client/All")
 	defer span.End()
 
-	return c.Get(ctx, c.baseURL+c.listEndpoint, nil, nil)
+	data, err := c.get(ctx, c.baseURL+c.listEndpoint, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	var products []*domain.Product
+	err = json.Unmarshal(data, &products)
+	if err != nil {
+		return nil, err
+	}
+
+	return products, nil
+}
+
+// Get returns a single product
+func (c *Client) Get(ctx context.Context, id int) (*domain.Product, error) {
+	ctx, span := trace.StartSpan(ctx, "products/client/Detail")
+	defer span.End()
+
+	data, err := c.get(ctx, c.baseURL+c.detailEndpoint, nil, ":pid", strconv.Itoa(id))
+	if err != nil {
+		return nil, err
+	}
+
+	product := &domain.Product{}
+	err = json.Unmarshal(data, product)
+	if err != nil {
+		return nil, err
+	}
+
+	return product, nil
 }
 
 // Get does a GET-call with the given parameters
-func (c *Client) Get(ctx context.Context, url string, params map[string]string, urlParams []string) ([]byte, error) {
+func (c *Client) get(ctx context.Context, url string, params map[string]string, urlParams ...string) ([]byte, error) {
 	ctx, span := trace.StartSpan(ctx, "products/client/Get")
 	defer span.End()
 

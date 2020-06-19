@@ -44,31 +44,30 @@ func (m *Module) Configure(injector *dingo.Injector) {
 	flamingo.BindTemplateFunc(injector, "for", new(interfaces.ForFunc))
 	flamingo.BindTemplateFunc(injector, "barType", new(interfaces.BarTypeFunc))
 
-	injector.Bind((*domain.RatingRepository)(nil)).To(new(infrastructure.RatingRepository))
-	injector.Bind((*domain.ProductRepository)(nil)).To(new(infrastructure.ProductRepository))
+	injector.Bind(new(domain.RatingRepository)).To(new(infrastructure.RatingRepository))
 	web.BindRoutes(injector, new(routes))
 }
 
 // Routes served by this module
 func (r *routes) Routes(registry *web.RouterRegistry) {
-	registry.Route("/", "home")
+	registry.MustRoute("/", "home")
 	registry.HandleGet("home", r.home.Home)
 
-	registry.Route("/products", "products")
+	registry.MustRoute("/products", "products")
 	registry.HandleGet("products", r.home.ProductList)
 
-	registry.Route("/rating/$pid<[0-9]+>", "rating")
+	registry.MustRoute("/rating/$pid<[0-9]+>", "rating")
 	registry.HandleGet("rating", r.rating.View)
 
-	registry.Route("/rating/new", "rating.product.form")
+	registry.MustRoute("/rating/new", "rating.product.form")
 	registry.HandleGet("rating.product.form", r.rating.ProductForm)
 
-	registry.Route("/rating/$pid<[0-9]+>/new", "rating.new")
+	registry.MustRoute("/rating/$pid<[0-9]+>/new", "rating.new")
 	registry.HandleGet("rating.new", r.rating.Form)
 
-	registry.Route("/rating/", "rating.post")
+	registry.MustRoute("/rating/", "rating.post")
 	registry.HandlePost("rating.post", r.rating.FormPost)
 
-	registry.Route("/rating/success", "rating.success")
+	registry.MustRoute("/rating/success", "rating.success")
 	registry.HandleGet("rating.success", r.rating.Success)
 }
