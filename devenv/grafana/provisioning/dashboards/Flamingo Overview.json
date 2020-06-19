@@ -81,7 +81,7 @@
         "lineColor": "rgb(31, 120, 193)",
         "show": false
       },
-      "tableColumn": "up{job=\"flamingo\"}",
+      "tableColumn": "up{instance=\"docker.for.mac.localhost:13210\", job=\"flamingo\"}",
       "targets": [
         {
           "expr": "up{job=\"flamingo\"}",
@@ -334,6 +334,69 @@
       }
     },
     {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "max": 150,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-yellow",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 100
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "id": 41,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "7.0.3",
+      "targets": [
+        {
+          "expr": "sum(increase(flamingo_response_bytes_count[1m]))",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Requests per minute",
+      "type": "gauge"
+    },
+    {
       "cacheTimeout": null,
       "colorBackground": true,
       "colorValue": false,
@@ -470,18 +533,22 @@
       "renderer": "flot",
       "seriesOverrides": [
         {
+          "$$hashKey": "object:479",
           "alias": "2xx",
           "color": "#508642"
         },
         {
+          "$$hashKey": "object:480",
           "alias": "3xx",
           "color": "#65c5db"
         },
         {
+          "$$hashKey": "object:481",
           "alias": "4xx",
           "color": "#ef843c"
         },
         {
+          "$$hashKey": "object:482",
           "alias": "5xx",
           "color": "#bf1b00"
         }
@@ -491,7 +558,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sort_desc(sum by (status_code) (increase(flamingo_response_bytes_sum[10m])))",
+          "expr": "sort_desc(sum by (status_code) (increase(flamingo_response_bytes_count[10m])))",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -653,6 +720,121 @@
     },
     {
       "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 18,
+        "y": 6
+      },
+      "hiddenSeries": false,
+      "id": 39,
+      "legend": {
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "rightSide": false,
+        "show": false,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pluginVersion": "7.0.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "process_cpu_goroutines",
+          "format": "time_series",
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Goroutines",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "$$hashKey": "object:179",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "$$hashKey": "object:180",
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
       "bars": true,
       "dashLength": 10,
       "dashes": false,
@@ -667,7 +849,7 @@
       "fillGradient": 0,
       "gridPos": {
         "h": 6,
-        "w": 10,
+        "w": 16,
         "x": 0,
         "y": 12
       },
@@ -758,12 +940,21 @@
           "decimals": 2,
           "mappings": [],
           "min": 0,
+          "noValue": "N/A",
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 1
+              },
+              {
+                "color": "green",
+                "value": 2
               }
             ]
           },
@@ -774,7 +965,7 @@
       "gridPos": {
         "h": 6,
         "w": 8,
-        "x": 10,
+        "x": 16,
         "y": 12
       },
       "id": 37,
@@ -793,7 +984,7 @@
       "pluginVersion": "7.0.3",
       "targets": [
         {
-          "expr": "sum(increase(rating_metrics_amount[1h]))",
+          "expr": "sum(increase(rating_metrics_amount[1m]))",
           "instant": false,
           "interval": "",
           "legendFormat": "",
@@ -802,7 +993,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Ratings per hour",
+      "title": "Ratings per minute",
       "type": "bargauge"
     }
   ],
@@ -845,5 +1036,5 @@
   "timezone": "",
   "title": "Flamingo Details",
   "uid": "z9KDhE0Zk",
-  "version": 1
+  "version": 3
 }

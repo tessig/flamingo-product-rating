@@ -80,6 +80,6 @@ var (
 )
 
 // GetFormData returns the default form values
-func (p *RatingFormDataProvider) GetFormData(ctx context.Context, req *web.Request) (interface{}, error) {
+func (p *RatingFormDataProvider) GetFormData(context.Context, *web.Request) (interface{}, error) {
 	return RatingFormData{}, nil
 }
