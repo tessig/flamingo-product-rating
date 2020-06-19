@@ -8,6 +8,7 @@ import (
 
 	"flamingo.me/flamingo/v3/framework/web"
 	"flamingo.me/form/application"
+	"go.opencensus.io/trace"
 
 	"github.com/tessig/flamingo-product-rating/src/app/domain"
 	"github.com/tessig/flamingo-product-rating/src/app/interfaces/controller/form"
@@ -50,26 +51,29 @@ func (c *RatingController) Inject(
 }
 
 // View shows the ratings for a specific product
-func (c *RatingController) View(_ context.Context, r *web.Request) web.Result {
+func (c *RatingController) View(ctx context.Context, r *web.Request) web.Result {
+	ctx, span := trace.StartSpan(ctx, "app/controller/rating/View")
+	defer span.End()
+
 	pidStr := r.Params["pid"]
 	pid, _ := strconv.Atoi(pidStr)
 
-	product, err := c.productRepo.Get(pid)
+	product, err := c.productRepo.Get(ctx, pid)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
 
-	average, err := c.ratingRepo.AverageByProductID(pid)
+	average, err := c.ratingRepo.AverageByProductID(ctx, pid)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
 
-	breakdown, err := c.ratingRepo.BreakdownByProductID(pid)
+	breakdown, err := c.ratingRepo.BreakdownByProductID(ctx, pid)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
 
-	reviews, err := c.ratingRepo.ListByProductID(pid)
+	reviews, err := c.ratingRepo.ListByProductID(ctx, pid)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
@@ -86,12 +90,15 @@ func (c *RatingController) View(_ context.Context, r *web.Request) web.Result {
 }
 
 // ProductForm shows the product selection form
-func (c *RatingController) ProductForm(_ context.Context, r *web.Request) web.Result {
+func (c *RatingController) ProductForm(ctx context.Context, r *web.Request) web.Result {
+	ctx, span := trace.StartSpan(ctx, "app/controller/rating/ProductForm")
+	defer span.End()
+
 	if pid, err := r.Query1("pid"); err == nil {
 		return c.responder.RouteRedirect("rating.new", map[string]string{"pid": pid})
 	}
 
-	products, err := c.productRepo.List()
+	products, err := c.productRepo.List(ctx)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
@@ -101,10 +108,13 @@ func (c *RatingController) ProductForm(_ context.Context, r *web.Request) web.Re
 
 // Form shows the rating form
 func (c *RatingController) Form(ctx context.Context, r *web.Request) web.Result {
+	ctx, span := trace.StartSpan(ctx, "app/controller/rating/Form")
+	defer span.End()
+
 	pidStr := r.Params["pid"]
 	pid, _ := strconv.Atoi(pidStr)
 
-	product, err := c.productRepo.Get(pid)
+	product, err := c.productRepo.Get(ctx, pid)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
@@ -120,6 +130,8 @@ func (c *RatingController) Form(ctx context.Context, r *web.Request) web.Result 
 
 // FormPost receives the form data and saves the entity
 func (c *RatingController) FormPost(ctx context.Context, r *web.Request) web.Result {
+	ctx, span := trace.StartSpan(ctx, "app/controller/rating/FormPost")
+	defer span.End()
 
 	formHandler := c.formHandlerFactory.CreateFormHandlerWithFormService(c.ratingFormDataProvider)
 	// HandleSubmittedForm provides domain.Form instance after performing
@@ -131,7 +143,7 @@ func (c *RatingController) FormPost(ctx context.Context, r *web.Request) web.Res
 			"rating/form",
 			&FormView{
 				Structure: form.RatingFormStructure,
-				IsValid:   f.ValidationInfo.IsValid(),
+				IsValid:   false,
 			},
 		)
 	}
@@ -166,7 +178,7 @@ func (c *RatingController) FormPost(ctx context.Context, r *web.Request) web.Res
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
-	product, err := c.productRepo.Get(pid)
+	product, err := c.productRepo.Get(ctx, pid)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
@@ -197,7 +209,7 @@ func (c *RatingController) FormPost(ctx context.Context, r *web.Request) web.Res
 		Stars:     stars,
 	}
 
-	err = c.ratingRepo.Save(rating)
+	err = c.ratingRepo.Save(ctx, rating)
 	if err != nil {
 		return renderErrorResponse
 	}
@@ -206,6 +218,9 @@ func (c *RatingController) FormPost(ctx context.Context, r *web.Request) web.Res
 }
 
 // Success shows the rating form success page
-func (c *RatingController) Success(_ context.Context, _ *web.Request) web.Result {
+func (c *RatingController) Success(ctx context.Context, _ *web.Request) web.Result {
+	_, span := trace.StartSpan(ctx, "app/controller/rating/Success")
+	defer span.End()
+
 	return c.responder.Render("rating/success", nil)
 }

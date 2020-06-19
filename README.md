@@ -11,8 +11,13 @@ go build -o rating .
 
 ## Development setup
 
-Database and productservice for development can be found in devenv directory.
+A docker-compose setup for development can be found in devenv directory.
 
+This contains:
+  * Database on mysql://localhost:33306
+  * Productservice on http://localhost:8080/ 
+  * Jaeger on http://localhost:16686/
+  
 Simply run `docker-compose up` from within devenv.
 
 On first or new setup, the database will be empty. Run 

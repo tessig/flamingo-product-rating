@@ -41,8 +41,8 @@ func (s *StartUpMetrics) ratingsMetrics() {
 	go func() {
 		for range ticker.C {
 			s.logger.Debug("collect rating metrics from DB")
-			amount, errA := s.ratingRepository.Count()
-			amountsByProduct, errB := s.ratingRepository.Amounts()
+			amount, errA := s.ratingRepository.Count(context.Background())
+			amountsByProduct, errB := s.ratingRepository.Amounts(context.Background())
 			if errA != nil || errB != nil {
 				continue
 			}

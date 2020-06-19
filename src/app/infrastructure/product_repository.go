@@ -1,7 +1,10 @@
 package infrastructure
 
 import (
+	"context"
 	"encoding/json"
+
+	"go.opencensus.io/trace"
 
 	"github.com/tessig/flamingo-product-rating/src/app/domain"
 )
@@ -14,8 +17,8 @@ type (
 
 	// Source represents the product data source
 	Source interface {
-		Detail(int) ([]byte, error)
-		All() ([]byte, error)
+		Detail(ctx context.Context, id int) ([]byte, error)
+		All(ctx context.Context) ([]byte, error)
 	}
 )
 
@@ -25,8 +28,11 @@ func (p *ProductRepository) Inject(s Source) {
 }
 
 // List returns all products
-func (p *ProductRepository) List() ([]*domain.Product, error) {
-	data, err := p.source.All()
+func (p *ProductRepository) List(ctx context.Context) ([]*domain.Product, error) {
+	_, span := trace.StartSpan(ctx, "app/productrepository/List")
+	defer span.End()
+
+	data, err := p.source.All(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -41,8 +47,11 @@ func (p *ProductRepository) List() ([]*domain.Product, error) {
 }
 
 // Get returns a single product
-func (p *ProductRepository) Get(id int) (*domain.Product, error) {
-	data, err := p.source.Detail(id)
+func (p *ProductRepository) Get(ctx context.Context, id int) (*domain.Product, error) {
+	ctx, span := trace.StartSpan(ctx, "app/productrepository/Get")
+	defer span.End()
+
+	data, err := p.source.Detail(ctx, id)
 	if err != nil {
 		return nil, err
 	}

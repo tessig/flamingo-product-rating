@@ -1,6 +1,7 @@
 package domain
 
 import (
+	"context"
 	"time"
 )
 
@@ -37,17 +38,17 @@ type (
 
 	// RatingRepository provides all functions for Rating storage
 	RatingRepository interface {
-		Count() (int64, error)
-		CountByProductID(pid int) (int64, error)
-		List() ([]*Rating, error)
-		ListByProductID(pid int) ([]*Rating, error)
-		Get(id int) (*Rating, error)
-		Save(rating *Rating) error
-		Delete(rating *Rating) error
-		Amounts() (*RatingAmounts, error)
-		Average() (*RatingAverage, error)
-		AverageByProductID(pid int) (*RatingAverage, error)
-		Breakdown() ([]*RatingBreakdown, error)
-		BreakdownByProductID(pid int) ([]*RatingBreakdown, error)
+		Count(ctx context.Context) (int64, error)
+		CountByProductID(ctx context.Context, pid int) (int64, error)
+		List(ctx context.Context) ([]*Rating, error)
+		ListByProductID(ctx context.Context, pid int) ([]*Rating, error)
+		Get(ctx context.Context, id int) (*Rating, error)
+		Save(ctx context.Context, rating *Rating) error
+		Delete(ctx context.Context, rating *Rating) error
+		Amounts(ctx context.Context) (*RatingAmounts, error)
+		Average(ctx context.Context) (*RatingAverage, error)
+		AverageByProductID(ctx context.Context, pid int) (*RatingAverage, error)
+		Breakdown(ctx context.Context) ([]*RatingBreakdown, error)
+		BreakdownByProductID(ctx context.Context, pid int) ([]*RatingBreakdown, error)
 	}
 )

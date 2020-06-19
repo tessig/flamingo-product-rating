@@ -11,6 +11,9 @@ import (
 
 	"flamingo.me/flamingo/v3/framework/flamingo"
 	"github.com/pkg/errors"
+	"go.opencensus.io/trace"
+
+	"github.com/tessig/flamingo-product-rating/src/app/infrastructure"
 )
 
 type (
@@ -22,6 +25,8 @@ type (
 		logger         flamingo.Logger
 	}
 )
+
+var _ infrastructure.Source = new(Client)
 
 // Inject dependencies
 func (c *Client) Inject(
@@ -39,17 +44,26 @@ func (c *Client) Inject(
 }
 
 // Detail returns the raw data for a given  product ID
-func (c *Client) Detail(pid int) ([]byte, error) {
-	return c.Get(context.Background(), c.baseURL+c.detailEndpoint, nil, []string{":pid", strconv.Itoa(pid)})
+func (c *Client) Detail(ctx context.Context, pid int) ([]byte, error) {
+	ctx, span := trace.StartSpan(ctx, "products/client/Detail")
+	defer span.End()
+
+	return c.Get(ctx, c.baseURL+c.detailEndpoint, nil, []string{":pid", strconv.Itoa(pid)})
 }
 
 // All returns the raw data for all products
-func (c *Client) All() ([]byte, error) {
-	return c.Get(context.Background(), c.baseURL+c.listEndpoint, nil, nil)
+func (c *Client) All(ctx context.Context) ([]byte, error) {
+	ctx, span := trace.StartSpan(ctx, "products/client/All")
+	defer span.End()
+
+	return c.Get(ctx, c.baseURL+c.listEndpoint, nil, nil)
 }
 
 // Get does a GET-call with the given parameters
 func (c *Client) Get(ctx context.Context, url string, params map[string]string, urlParams []string) ([]byte, error) {
+	ctx, span := trace.StartSpan(ctx, "products/client/Get")
+	defer span.End()
+
 	replacer := strings.NewReplacer(urlParams...)
 	requestURL := replacer.Replace(url)
 

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"flamingo.me/flamingo/v3/framework/web"
+	"go.opencensus.io/trace"
 
 	"github.com/tessig/flamingo-product-rating/src/app/domain"
 	"github.com/tessig/flamingo-product-rating/src/app/interfaces/controller/viewdata"
@@ -30,18 +31,21 @@ func (c *HomeController) Inject(
 }
 
 // Home provides the general overview
-func (c *HomeController) Home(_ context.Context, _ *web.Request) web.Result {
-	average, err := c.ratingRepo.Average()
+func (c *HomeController) Home(ctx context.Context, _ *web.Request) web.Result {
+	ctx, span := trace.StartSpan(ctx, "app/controller/Home")
+	defer span.End()
+
+	average, err := c.ratingRepo.Average(ctx)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
 
-	breakdown, err := c.ratingRepo.Breakdown()
+	breakdown, err := c.ratingRepo.Breakdown(ctx)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
 
-	reviews, err := c.ratingRepo.List()
+	reviews, err := c.ratingRepo.List(ctx)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
@@ -54,13 +58,16 @@ func (c *HomeController) Home(_ context.Context, _ *web.Request) web.Result {
 }
 
 // ProductList shows a list of all products with links to their review overview pages
-func (c *HomeController) ProductList(_ context.Context, _ *web.Request) web.Result {
-	products, err := c.productRepo.List()
+func (c *HomeController) ProductList(ctx context.Context, _ *web.Request) web.Result {
+	ctx, span := trace.StartSpan(ctx, "app/controller/ProductList")
+	defer span.End()
+
+	products, err := c.productRepo.List(ctx)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}
 
-	amounts, err := c.ratingRepo.Amounts()
+	amounts, err := c.ratingRepo.Amounts(ctx)
 	if err != nil {
 		return c.responder.ServerError(err)
 	}

@@ -1,6 +1,7 @@
 flamingo: {
 	"cmd.name":                   "rating"
 	"systemendpoint.serviceAddr": ":13210"
+	"opencensus.jaeger.enable": true
 }
 
 core: {
