@@ -134,7 +134,6 @@ func (r *RatingRepository) Save(ctx context.Context, rating *domain.Rating) erro
 
 	ctx, _ = tag.New(ctx, tag.Upsert(keyProductID, strconv.Itoa(rating.ProductID)), tag.Upsert(opencensus.KeyArea, "-"))
 	stats.Record(ctx, stat.M(1))
-	fmt.Println("RECORD: 1")
 
 	return nil
 }

@@ -2,7 +2,6 @@ package controller
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"time"
 
@@ -122,8 +121,7 @@ func (c *RatingController) Form(ctx context.Context, r *web.Request) web.Result 
 	formHandler := c.formHandlerFactory.CreateSimpleFormHandler()
 	// HandleUnsubmittedForm provides default domain.Form instance without performing
 	// http request body processing and form data validation
-	f, err := formHandler.HandleUnsubmittedForm(ctx, r)
-	fmt.Println(f)
+	_, _ = formHandler.HandleUnsubmittedForm(ctx, r)
 
 	return c.responder.Render("rating/form", &FormView{Product: product, Structure: form.RatingFormStructure})
 }
