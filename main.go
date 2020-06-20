@@ -4,7 +4,6 @@ import (
 	"flamingo.me/dingo"
 	"flamingo.me/flamingo/v3"
 	"flamingo.me/flamingo/v3/core/cache"
-	"flamingo.me/flamingo/v3/core/gotemplate"
 	coreHealthcheck "flamingo.me/flamingo/v3/core/healthcheck"
 	"flamingo.me/flamingo/v3/core/locale"
 	framework "flamingo.me/flamingo/v3/framework/flamingo"
@@ -39,7 +38,6 @@ func main() {
 		[]dingo.Module{
 			new(locale.Module),
 			new(form.Module),
-			new(gotemplate.Module),
 			new(db.Module),
 			new(migration.Module),
 			new(products.Module),
