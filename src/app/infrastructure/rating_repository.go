@@ -3,7 +3,6 @@ package infrastructure
 import (
 	"context"
 	"errors"
-	"fmt"
 	"strconv"
 
 	"flamingo.me/flamingo/v3/framework/opencensus"
