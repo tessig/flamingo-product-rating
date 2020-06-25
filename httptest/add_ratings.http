@@ -1,0 +1,62 @@
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Thorsten&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Carsten&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Bastian&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Thorsten&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Carsten&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Bastian&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Thorsten&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Carsten&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
+
+POST http://localhost:3322/rating
+Content-Type: application/x-www-form-urlencoded
+
+product_id={{PID}}&name=Bastian&stars={{STARS}}&title=Test&text=I love Flamingo!
+
+###
